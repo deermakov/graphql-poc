@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableJpaRepositories("ru.lanit.research.graphql.adapter.jpa")
 @EntityScan("ru.lanit.research.graphql.domain")
 @EnableTransactionManagement
-@EnableScheduling
 public class Application {
 
     public static void main(String[] args) {

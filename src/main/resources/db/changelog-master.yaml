@@ -7,3 +7,5 @@ databaseChangeLog:
       file: classpath:/db/v1/03-create_legal_entity.yml
   - include:
       file: classpath:/db/v1/04-insert_deals.sql
+  - include:
+      file: classpath:/db/v1/05-insert_participants.sql

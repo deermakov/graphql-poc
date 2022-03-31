@@ -8,7 +8,10 @@ databaseChangeLog:
             columns:
               - column:
                   name: ID
-                  type: CHAR(36)
+                  type: UUID
+              - column:
+                  name: DEAL_ID
+                  type: UUID
               - column:
                   name: INN
                   type: CHAR(10)

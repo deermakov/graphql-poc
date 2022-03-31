@@ -13,6 +13,7 @@ type LegalEntity {
 # The Root Query for the application
 type Query {
     allDeals: [Deal]!
+    allLegalEntities: [LegalEntity]!
 }
 
 # The Root Mutation for the application

@@ -9,5 +9,5 @@ import javax.persistence.*;
 public abstract class Party extends DomainObject {
     @ManyToOne
     @JoinColumn(name="deal_id", nullable=false)
-    private Deal deal;
+    protected Deal deal;
 }

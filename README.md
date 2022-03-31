@@ -8,7 +8,8 @@ GraphiQL:
     {
         allDeals {
             num,
-            sum
+            sum,
+            participants
         }
     }
 
