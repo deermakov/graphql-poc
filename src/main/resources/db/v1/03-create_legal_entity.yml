@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: 03-create_legal_entity
+      author: deermakov
+      changes:
+        - createTable:
+            tableName: LEGAL_ENTITY
+            columns:
+              - column:
+                  name: ID
+                  type: CHAR(36)
+              - column:
+                  name: INN
+                  type: CHAR(10)
+                  constraints:
+                    nullable: true
+        - addPrimaryKey:
+            columnNames: ID
+            constraintName: PK_LEGAL_ENTITY
+            tableName: LEGAL_ENTITY
+            validate: true
+      rollback:
+        - dropTable:
+            tableName: LEGAL_ENTITY

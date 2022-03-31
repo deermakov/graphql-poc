@@ -15,13 +15,4 @@ import ru.lanit.research.graphql.app.api.SenderService;
 @Slf4j
 public class MainProcessor {
 
-    private final SenderService senderService;
-
-    @Scheduled(fixedDelay = 3000)
-    @Transactional("chainedTransactionManager")
-    public void sendNextEntity() {
-        // Вычитать очередную сущность из БД и отправить ее в Kafka
-        senderService.sendNextEntity();
-    }
-
 }

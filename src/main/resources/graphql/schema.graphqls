@@ -1,0 +1,21 @@
+type Deal {
+    id: ID!
+    num: String!
+    sum: Float
+    participants: [LegalEntity]
+}
+
+type LegalEntity {
+    id: ID!
+    inn: String!
+}
+
+# The Root Query for the application
+type Query {
+    allDeals: [Deal]!
+}
+
+# The Root Mutation for the application
+#type Mutation {
+#    writeDeal(num: String!, sum: Float) : Deal!
+#}

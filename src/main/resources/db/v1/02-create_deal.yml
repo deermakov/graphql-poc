@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: 02-create_deal
+      author: deermakov
+      changes:
+        - createTable:
+            tableName: DEAL
+            columns:
+              - column:
+                  name: ID
+                  type: CHAR(36)
+              - column:
+                  name: NUM
+                  type: CHAR(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: SUM
+                  type: NUMBER
+                  constraints:
+                      nullable: true
+        - addPrimaryKey:
+            columnNames: ID
+            constraintName: PK_DEAL
+            tableName: DEAL
+            validate: true
+      rollback:
+        - dropTable:
+            tableName: DEAL

@@ -1,6 +1,6 @@
 spring:
   application:
-    name: kafka-postgresql-transaction-1
+    name: graphql-poc
     version: replaceVersion
   kafka:
 #    bootstrap-servers: - задается в TestContainersInitializer
