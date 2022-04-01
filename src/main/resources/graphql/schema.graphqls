@@ -17,6 +17,6 @@ type Query {
 }
 
 # The Root Mutation for the application
-#type Mutation {
-#    writeDeal(num: String!, sum: Float) : Deal!
-#}
+type Mutation {
+    writeDeal(num: String!, sum: Float) : Deal!
+}

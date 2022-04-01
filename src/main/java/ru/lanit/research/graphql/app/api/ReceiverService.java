@@ -8,5 +8,4 @@ import ru.lanit.research.graphql.domain.Deal;
 public interface ReceiverService {
 
     void receiveEntity(Deal sourceEntity);
-
 }

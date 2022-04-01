@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 abstract class TestContainersInitializer {
 
     static class Initializer
-            implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+        implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
         static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>();
 
@@ -20,9 +20,9 @@ abstract class TestContainersInitializer {
             Startables.deepStart(Stream.of(postgres)).join();
 
             return Map.of(
-                    "spring.datasource.url", postgres.getJdbcUrl(),
-                    "spring.datasource.username", postgres.getUsername(),
-                    "spring.datasource.password", postgres.getPassword()
+                "spring.datasource.url", postgres.getJdbcUrl(),
+                "spring.datasource.username", postgres.getUsername(),
+                "spring.datasource.password", postgres.getPassword()
             );
         }
 
@@ -30,8 +30,8 @@ abstract class TestContainersInitializer {
         public void initialize(ConfigurableApplicationContext context) {
             var env = context.getEnvironment();
             env.getPropertySources().addFirst(new MapPropertySource(
-                    "testcontainers",
-                    (Map) getProperties()
+                "testcontainers",
+                (Map) getProperties()
             ));
         }
     }
