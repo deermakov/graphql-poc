@@ -15,7 +15,7 @@ import javax.persistence.Table;
 @Table(name = "LEGAL_ENTITY")
 public class LegalEntity extends DomainObject {
     @ManyToOne
-    @JoinColumn(name = "deal_id", nullable = true)
+    @JoinColumn(insertable = false, updatable = false)
     private Deal deal;
 
     private String inn;

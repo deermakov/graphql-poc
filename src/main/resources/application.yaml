@@ -9,7 +9,7 @@ spring:
 #    password: ${DB_PASSWORD} - задается в TestContainersInitializer
   jpa:
     generate-ddl: false  # только ручное создание объектов БД
-    show-sql: true
+    show-sql: false # дубликат, см. logging ниже
     properties:
       hibernate:
         format_sql: true
@@ -25,6 +25,9 @@ logging:
   level:
     org.apache.http: INFO
     org.springframework.transaction.interceptor: WARN # поставить в TRACE для получения информации по транзакциям
+    org.hibernate:
+        SQL: debug
+        type: trace
     root: info
 
 myservice:

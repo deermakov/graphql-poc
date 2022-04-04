@@ -7,7 +7,7 @@ GraphiQL:
     UI: http://localhost:9900/graphiql
 
     запрос всех сделок:
-    {
+    query {
         allDeals {
             num,
             sum,

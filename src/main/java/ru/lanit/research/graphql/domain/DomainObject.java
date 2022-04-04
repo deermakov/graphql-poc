@@ -3,6 +3,7 @@ package ru.lanit.research.graphql.domain;
 import lombok.Data;
 
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.util.UUID;
@@ -11,6 +12,6 @@ import java.util.UUID;
 @MappedSuperclass
 public abstract class DomainObject {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 }

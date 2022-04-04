@@ -12,6 +12,8 @@ databaseChangeLog:
               - column:
                   name: DEAL_ID
                   type: UUID
+                  constraints:
+                        nullable: false
               - column:
                   name: INN
                   type: CHAR(10)
