@@ -8,6 +8,7 @@ type Deal {
 type LegalEntity {
     id: ID!
     inn: String
+    deal: Deal
 }
 
 input LegalEntityInput {
