@@ -1,8 +1,9 @@
-package ru.lanit.research.graphql.adapter.graphql;
+package ru.lanit.research.graphql.adapter.graphql.server;
 
-import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.stereotype.Controller;
 import ru.lanit.research.graphql.adapter.jpa.DealJpaRepository;
 import ru.lanit.research.graphql.adapter.jpa.LegalEntityJpaRepository;
 import ru.lanit.research.graphql.domain.Deal;
@@ -12,13 +13,14 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
-@Component
+@Controller
 @RequiredArgsConstructor
-public class Mutation implements GraphQLMutationResolver {
+public class Mutation {
     private final DealJpaRepository dealJpaRepository;
     private final LegalEntityJpaRepository legalEntityJpaRepository;
 
-    public Deal writeDeal(UUID id, String num, BigDecimal sum, List<LegalEntity> participants) {
+    @MutationMapping
+    public Deal writeDeal(@Argument UUID id, @Argument String num, @Argument BigDecimal sum, @Argument List<LegalEntity> participants) {
         Deal deal = Deal.builder().id(id).num(num).sum(sum).participants(participants).build();
         return dealJpaRepository.save(deal);
     }

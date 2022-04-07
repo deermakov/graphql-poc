@@ -1,8 +1,8 @@
-package ru.lanit.research.graphql.adapter.graphql;
+package ru.lanit.research.graphql.adapter.graphql.server;
 
-import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.stereotype.Controller;
 import ru.lanit.research.graphql.adapter.jpa.DealJpaRepository;
 import ru.lanit.research.graphql.adapter.jpa.LegalEntityJpaRepository;
 import ru.lanit.research.graphql.domain.Deal;
@@ -10,16 +10,19 @@ import ru.lanit.research.graphql.domain.LegalEntity;
 
 import java.util.List;
 
-@Component
+@Controller
 @RequiredArgsConstructor
-public class Query implements GraphQLQueryResolver {
+public class Query {
     private final DealJpaRepository dealJpaRepository;
     private final LegalEntityJpaRepository legalEntityJpaRepository;
 
+    @QueryMapping
     public List<Deal> getAllDeals() {
+        //if (true) throw new RuntimeException("AAARRR");
         return dealJpaRepository.findAllByOrderByNum();
     }
 
+    @QueryMapping
     public List<LegalEntity> getAllLegalEntities() {
         return legalEntityJpaRepository.findAllByOrderByInn();
     }

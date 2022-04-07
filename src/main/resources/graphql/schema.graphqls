@@ -18,8 +18,8 @@ input LegalEntityInput {
 
 # The Root Query for the application
 type Query {
-    allDeals: [Deal]!
-    allLegalEntities: [LegalEntity]!
+    getAllDeals: [Deal]!
+    getAllLegalEntities: [LegalEntity]!
 }
 
 # The Root Mutation for the application

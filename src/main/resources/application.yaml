@@ -29,6 +29,7 @@ logging:
         SQL: debug
         type: trace
     root: info
+    org.springframework.graphql: debug
 
 myservice:
   send-transactions-faults-num: 0     # сколько нужно имитировать системных сбоев при коммитах транзакций Kafka на отправку сообщений

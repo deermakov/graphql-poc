@@ -1,30 +1,33 @@
 # graphql-poc
 PoC GraphQL
-В проекте используется testcontainer для PostgreSQL, поэтому для запуска нужен Docker"# graphql-poc"
 
-GraphiQL:
+Клиент и сервер GraphQL реализованы на Spring for GraphQL: https://spring.io/projects/spring-graphql
 
-    UI: http://localhost:9900/graphiql
+В проекте используется testcontainer для PostgreSQL, поэтому для запуска нужен Docker
+
+Примеры запросов:
 
     Запрос всех сделок:
     query {
-        allDeals {
+        getAllDeals {
             id,
             num,
             sum,
             participants {
-                id
+                id,
+                inn
             }
         }
     }
 
     Запрос всех участников:
     {
-        allLegalEntities {
+        getAllLegalEntities {
             id
             inn
             deal {
-                id
+                id,
+                num
             }
         }
     }
@@ -79,8 +82,3 @@ GraphiQL:
         }
         ]
     }
-
-GraphQL:
-
-    GET запрос всех сделок (НЕ РАБОТАЕТ): http://localhost:9900/graphql?query={allDeals{num,sum}}
-
