@@ -16,6 +16,22 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:/db/changelog-master.yaml
+  kafka:
+    #    bootstrap-servers: - задается в TestContainersInitializer
+    consumer:
+      group-id: myconsumergroup
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: ru.lanit.research.kafkascaling.sender.adapter.kafka.dto,ru.lanit.research.kafkascaling.receiver.adapter.kafka.dto
+        spring.json.value.default.type: ru.lanit.research.graphql.adapter.kafka.dto.KafkaGraphQlRequest # для упрощения считаем, что у нас один тип DTO для входящих сообщений
+        isolation.level: read_committed
+    producer:
+      acks: all
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: false # не шлем тип DTO (java class)
 
 # embedded Tomcat
 server:
@@ -32,8 +48,5 @@ logging:
     org.springframework.graphql: debug
 
 myservice:
-  send-transactions-faults-num: 0     # сколько нужно имитировать системных сбоев при коммитах транзакций Kafka на отправку сообщений
-  receive-transactions-faults-num: 0  # сколько нужно имитировать системных сбоев при коммитах транзакций Kafka на получение сообщений
-  business-faults: true               # имитировать ли сбои в бизнес-логике
   topics:
     main-topic: my-topic

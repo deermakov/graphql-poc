@@ -3,6 +3,7 @@ package ru.lanit.research.graphql.fw;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.MapPropertySource;
+import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.lifecycle.Startables;
 
@@ -16,13 +17,17 @@ abstract class TestContainersInitializer {
 
         static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>();
 
+        static KafkaContainer kafka = new KafkaContainer();
+
         public static Map<String, String> getProperties() {
-            Startables.deepStart(Stream.of(postgres)).join();
+            Startables.deepStart(Stream.of(kafka, postgres)).join();
 
             return Map.of(
                 "spring.datasource.url", postgres.getJdbcUrl(),
                 "spring.datasource.username", postgres.getUsername(),
-                "spring.datasource.password", postgres.getPassword()
+                "spring.datasource.password", postgres.getPassword(),
+
+                "spring.kafka.bootstrap-servers", kafka.getBootstrapServers()
             );
         }
 
