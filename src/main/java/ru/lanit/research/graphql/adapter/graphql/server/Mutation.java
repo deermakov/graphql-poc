@@ -38,9 +38,17 @@ public class Mutation {
     // todo попробовать реализовать обновление participant (в т.ч. перепривязку) в рамках метода writeDeal()
     public LegalEntity writeLegalEntity(@Argument LegalEntity legalEntity) throws Exception {
         // вычитывание существующей сущности из БД (или создание новой, если не нашли)
-        LegalEntity base = legalEntityJpaRepository.findById(legalEntity.getId()).orElse(new LegalEntity());
+        UUID id = legalEntity.getId();
+        String inn = legalEntity.getInn();
+        LegalEntity base = null;
+        if (id != null) // ...по id
+            base = legalEntityJpaRepository.findById(id).orElse(new LegalEntity());
+        else if (inn != null) // ... по бизнес-ключу
+            base = legalEntityJpaRepository.findByInn(inn).orElse(new LegalEntity());
+
         // merge сущности из запроса в сущность в БД
         BeanMerger.shallowMerge(legalEntity, base);
+
         // сохранение обновленной сущности в БД
         // todo может быть попробовать возложить merge на GraphQL/JPA
         return legalEntityJpaRepository.save(base);
