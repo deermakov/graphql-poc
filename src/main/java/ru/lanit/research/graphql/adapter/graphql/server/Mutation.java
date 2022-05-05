@@ -26,6 +26,7 @@ public class Mutation {
 
     @MutationMapping
     public Deal writeDeal(@Argument UUID id, @Argument String num, @Argument BigDecimal sum, @Argument List<LegalEntity> participants) {
+        // ... т.к. здесь нет merge с версией из БД, то поля, отсутствующие в запросе, будут nulled в БД
         Deal deal = Deal.builder().id(id).num(num).sum(sum).participants(participants).build();
         // т.к. ссылка на Deal лежит в LegalEntity, надо ее заполнить перед сохранением
         participants.stream().forEach(legalEntity -> legalEntity.setDeal(deal));

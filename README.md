@@ -17,7 +17,8 @@ PoC GraphQL, включая:
             sum,
             participants {
                 id,
-                inn
+                inn,
+                name
             }
         }
     }
@@ -27,6 +28,7 @@ PoC GraphQL, включая:
         getAllLegalEntities {
             id
             inn
+            name
             deal {
                 id,
                 num
@@ -40,7 +42,9 @@ PoC GraphQL, включая:
             num
             sum
             participants {
-                inn
+                id,
+                inn,
+                name
             }
         }
     }
@@ -64,7 +68,8 @@ PoC GraphQL, включая:
             num
             sum
             participants {
-                inn
+                inn,
+                name
             }
         }
     }
@@ -97,7 +102,7 @@ PoC GraphQL, включая:
         }
     }
     + параметры:
-        {
+    {
         "legalEntity":{
             "id": "10000002-b0d9-11ec-b909-0242ac120002",
             "deal":
