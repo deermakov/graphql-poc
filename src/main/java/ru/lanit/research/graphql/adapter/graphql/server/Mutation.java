@@ -35,6 +35,7 @@ public class Mutation {
 
     @MutationMapping
     @Transactional
+    // todo попробовать реализовать обновление participant (в т.ч. перепривязку) в рамках метода writeDeal()
     public LegalEntity writeLegalEntity(@Argument LegalEntity legalEntity) throws Exception {
         // вычитывание существующей сущности из БД (или создание новой, если не нашли)
         LegalEntity base = legalEntityJpaRepository.findById(legalEntity.getId()).orElse(new LegalEntity());
