@@ -84,3 +84,26 @@ PoC GraphQL, включая:
         }
         ]
     }
+
+    Перепривязать участника от первой сделки ко второй:
+    mutation M($legalEntity: LegalEntityInput){
+        writeLegalEntity(legalEntity: $legalEntity) {
+            id
+            inn
+            name
+            deal {
+                id
+            }
+        }
+    }
+    + параметры:
+        {
+        "legalEntity":{
+            "id": "10000002-b0d9-11ec-b909-0242ac120002",
+            "deal":
+            {
+                "id": "00000002-b0d9-11ec-b909-0242ac120002"
+            }
+        
+        }
+    }

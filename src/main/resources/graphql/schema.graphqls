@@ -8,12 +8,22 @@ type Deal {
 type LegalEntity {
     id: ID!
     inn: String
+    name: String
     deal: Deal
 }
 
 input LegalEntityInput {
-    id: ID,
-    inn: String!
+    id: ID
+    inn: String
+    name: String
+    deal: DealInput
+}
+
+input DealInput {
+    id: ID
+    num: String
+    sum: Float
+    participants: [LegalEntityInput]
 }
 
 # The Root Query for the application
@@ -25,4 +35,5 @@ type Query {
 # The Root Mutation for the application
 type Mutation {
     writeDeal(id: ID, num: String!, sum: Float, participants: [LegalEntityInput]) : Deal!
+    writeLegalEntity(legalEntity: LegalEntityInput) : LegalEntity!
 }

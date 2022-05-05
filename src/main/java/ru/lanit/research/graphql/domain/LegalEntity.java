@@ -1,7 +1,9 @@
 package ru.lanit.research.graphql.domain;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -12,6 +14,8 @@ import javax.persistence.Table;
  * Полученная сущность
  */
 @Data
+@SuperBuilder
+@NoArgsConstructor
 @Entity
 @Table(name = "LEGAL_ENTITY")
 public class LegalEntity extends DomainObject {
