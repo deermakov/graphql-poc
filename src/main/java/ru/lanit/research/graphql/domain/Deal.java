@@ -16,10 +16,9 @@ import java.util.List;
 @Entity
 @Table(name = "DEAL")
 public class Deal extends DomainObject {
-    private String num;
+    private String num; // это бизнес-ключ
     private BigDecimal sum;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL) // без EAGER вылетает ошибка при запросе deal.participants
-    @JoinColumn(name = "deal_id", nullable = false)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "deal") // без EAGER вылетает ошибка при запросе deal.participants
     private List<LegalEntity> participants;
 }

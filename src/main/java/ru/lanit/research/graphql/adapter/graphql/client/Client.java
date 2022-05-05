@@ -30,8 +30,15 @@ public class Client {
 
     private final MessageProducer messageProducer;
 
+    private boolean executed;
+
     @Scheduled(fixedDelay = 5000)
     public void getAllDeals() {
+
+        if (executed) {
+            return;
+        }
+        executed = true;
 
         // Синхронный вызов
         WebClient webClient = WebClient.create("http://localhost:9900/graphql");

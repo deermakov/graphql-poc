@@ -1,9 +1,11 @@
 # graphql-poc
-PoC GraphQL
+PoC GraphQL, включая:
+- обычный GraphQL over HTTP: localhost:9900/graphql
+- GraphQL over Kafka (запросы и ответы, см. Client, MessageProducer, MessageConsumer)
 
 Клиент и сервер GraphQL реализованы на Spring for GraphQL: https://spring.io/projects/spring-graphql
 
-В проекте используется testcontainer для PostgreSQL, поэтому для запуска нужен Docker
+В проекте используется testcontainers для PostgreSQL и Kafka, поэтому для запуска нужен Docker
 
 Примеры запросов:
 

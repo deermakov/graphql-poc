@@ -1,29 +1,41 @@
 databaseChangeLog:
-  - changeSet:
-      id: 03-create_legal_entity
-      author: deermakov
-      changes:
-        - createTable:
-            tableName: LEGAL_ENTITY
-            columns:
-              - column:
-                  name: ID
-                  type: UUID
-              - column:
-                  name: DEAL_ID
-                  type: UUID
-                  constraints:
-                        nullable: false
-              - column:
-                  name: INN
-                  type: CHAR(10)
-                  constraints:
-                    nullable: true
-        - addPrimaryKey:
-            columnNames: ID
-            constraintName: PK_LEGAL_ENTITY
-            tableName: LEGAL_ENTITY
-            validate: true
-      rollback:
-        - dropTable:
-            tableName: LEGAL_ENTITY
+- changeSet:
+    id: 03-create_legal_entity
+    author: deermakov
+    changes:
+    - createTable:
+        tableName: LEGAL_ENTITY
+        columns:
+        - column:
+            name: ID
+            type: UUID
+        - column:
+            name: DEAL_ID
+            type: UUID
+            constraints:
+              nullable: false
+        - column:
+            name: INN
+            type: VARCHAR(10)
+            constraints:
+              nullable: true
+        - column:
+            name: NAME
+            type: VARCHAR(100)
+            constraints:
+              nullable: true
+    - addPrimaryKey:
+        columnNames: ID
+        constraintName: PK_LEGAL_ENTITY
+        tableName: LEGAL_ENTITY
+        validate: true
+    - addUniqueConstraint:
+        columnNames: INN
+        constraintName: INN_UNIQUE
+        deferrable: true
+        initiallyDeferred: true
+        tableName: LEGAL_ENTITY
+        validate: true
+    rollback:
+    - dropTable:
+        tableName: LEGAL_ENTITY
