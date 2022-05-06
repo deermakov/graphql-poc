@@ -75,5 +75,4 @@ public class BeanMerger {
 
         return updated;
     }
-
 }

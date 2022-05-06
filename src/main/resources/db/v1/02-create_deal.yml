@@ -11,7 +11,7 @@ databaseChangeLog:
             type: UUID
         - column:
             name: NUM
-            type: VARCHAR(10)
+            type: VARCHAR(20)
             constraints:
               nullable: false
         - column:

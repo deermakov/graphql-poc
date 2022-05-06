@@ -9,5 +9,6 @@ import java.util.UUID;
 
 public interface LegalEntityJpaRepository extends CrudRepository<LegalEntity, UUID> {
     Optional<LegalEntity> findByInn(String inn);
+
     List<LegalEntity> findAllByOrderByInn();
 }

@@ -34,6 +34,6 @@ type Query {
 
 # The Root Mutation for the application
 type Mutation {
-    writeDeal(id: ID, num: String!, sum: Float, participants: [LegalEntityInput]) : Deal!
+    writeDeal(deal: DealInput) : Deal!
     writeLegalEntity(legalEntity: LegalEntityInput) : LegalEntity!
 }

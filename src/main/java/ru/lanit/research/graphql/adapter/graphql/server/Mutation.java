@@ -1,6 +1,5 @@
 package ru.lanit.research.graphql.adapter.graphql.server;
 
-import liquibase.pro.packaged.L;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -13,8 +12,8 @@ import ru.lanit.research.graphql.app.impl.BeanMerger;
 import ru.lanit.research.graphql.domain.Deal;
 import ru.lanit.research.graphql.domain.LegalEntity;
 
-import java.math.BigDecimal;
-import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.UUID;
 
 @Controller
@@ -24,27 +23,31 @@ public class Mutation {
     private final DealJpaRepository dealJpaRepository;
     private final LegalEntityJpaRepository legalEntityJpaRepository;
 
+    @PersistenceContext
+    private final EntityManager entityManager;
+
     @MutationMapping
-    public Deal writeDeal(@Argument UUID id, @Argument String num, @Argument BigDecimal sum, @Argument List<LegalEntity> participants) {
-        // ... т.к. здесь нет merge с версией из БД, то поля, отсутствующие в запросе, будут nulled в БД
-        Deal deal = Deal.builder().id(id).num(num).sum(sum).participants(participants).build();
-        // т.к. ссылка на Deal лежит в LegalEntity, надо ее заполнить перед сохранением
-        participants.stream().forEach(legalEntity -> legalEntity.setDeal(deal));
-        return dealJpaRepository.save(deal);
+    @Transactional
+    public Deal writeDeal(@Argument Deal deal) {
+        Deal mergedDeal = (Deal) deal.mergeToDb(entityManager);
+        return dealJpaRepository.save(mergedDeal);
     }
 
     @MutationMapping
     @Transactional
-    // todo попробовать реализовать обновление participant (в т.ч. перепривязку) в рамках метода writeDeal()
+    @Deprecated // т.к. обновление participant (в т.ч. перепривязка) поддерживается в рамках метода writeDeal()
     public LegalEntity writeLegalEntity(@Argument LegalEntity legalEntity) throws Exception {
         // вычитывание существующей сущности из БД (или создание новой, если не нашли)
         UUID id = legalEntity.getId();
         String inn = legalEntity.getInn();
         LegalEntity base = null;
         if (id != null) // ...по id
+        {
             base = legalEntityJpaRepository.findById(id).orElse(new LegalEntity());
-        else if (inn != null) // ... по бизнес-ключу
+        } else if (inn != null) // ... по бизнес-ключу
+        {
             base = legalEntityJpaRepository.findByInn(inn).orElse(new LegalEntity());
+        }
 
         // merge сущности из запроса в сущность в БД
         BeanMerger.shallowMerge(legalEntity, base);

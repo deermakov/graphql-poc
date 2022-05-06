@@ -2,6 +2,8 @@
 PoC GraphQL, включая:
 - обычный GraphQL over HTTP: localhost:9900/graphql
 - GraphQL over Kafka (запросы и ответы, см. Client, MessageProducer, MessageConsumer)
+- идентификация сущностей по суррогатному и бизнес-ключу
+- обновление графа сущностей, включая обновление (в т.ч. перепривязку) вложенных сущностей
 
 Клиент и сервер GraphQL реализованы на Spring for GraphQL: https://spring.io/projects/spring-graphql
 
@@ -37,60 +39,111 @@ PoC GraphQL, включая:
     }
 
     Создание новой сделки с новыми участниками:
-    mutation M($num: String!, $sum: Float, $participants: [LegalEntityInput]){
-        writeDeal(num: $num, sum: $sum, participants: $participants) {
+    mutation M($deal: DealInput){
+        writeDeal(deal: $deal) {
+            id
             num
             sum
             participants {
                 id,
                 inn,
-                name
+                name,
+                deal{
+                    id
+                }
             }
         }
     }
     + параметры:
     {
-        "num": "Моя сделка",
-        "sum": 111,
-        "participants": [
-            {
-                "inn": "INN1"
-            },
-            {
-                "inn": "INN2"
-            }
-        ]
-    }
+        "deal": {
+            "num": "Моя сделка",
+            "sum": 111,
+            "participants": [
+                {
+                    "inn": "INN1",
+                    "name": "Новый - 1"
+                },
+                {
+                    "inn": "INN2",
+                    "name": "Новый - 2"
+                }
+            ]
+        }
+    }    
 
-    Обновление существующей сделки с обновлением существующих участников:
-    mutation M($id: ID, $num: String!, $sum: Float, $participants: [LegalEntityInput]){
-        writeDeal(id: $id, num: $num, sum: $sum, participants: $participants) {
+    Создание новой сделки с обновлением существующих участников (у них обновляются name'ы и
+    они перепривязываются от существующей сделки к этой новой). Идентификация участников по бизнес-ключам:
+    mutation M($deal: DealInput){
+        writeDeal(deal: $deal) {
+            id
             num
             sum
             participants {
+                id,
                 inn,
-                name
+                name,
+                deal{
+                    id
+                }
             }
         }
     }
     + параметры:
     {
-        "id": "00000001-b0d9-11ec-b909-0242ac120002",
-        "num": "Сделка 1a",
-        "sum": 111,
-        "participants": [
-        {
-            "id": "10000001-b0d9-11ec-b909-0242ac120002",
-            "inn": "INN1a"
-        },
-        {
-            "id": "10000002-b0d9-11ec-b909-0242ac120002",
-            "inn": "INN2a"
+        "deal": {
+            "num": "Моя сделка 2",
+            "sum": 111,
+            "participants": [
+                {
+                    "inn": "100",
+                    "name": "Альфа UPD"
+                },
+                {
+                    "inn": "200",
+                    "name": "Бета UPD"
+                }
+            ]
         }
-        ]
     }
 
-    Перепривязать участника от первой сделки ко второй:
+    Обновление существующей сделки (sum) с обновлением существующих участников (name'ы).
+    Идентификация сделки и участников - по id:
+    mutation M($deal: DealInput){
+        writeDeal(deal: $deal) {
+            id
+            num
+            sum
+            participants {
+                id,
+                inn,
+                name,
+                deal{
+                    id
+                }
+            }
+        }
+    }
+    + параметры:
+    {
+        "deal": {
+            "id": "00000001-b0d9-11ec-b909-0242ac120002",
+            "sum": 999,
+            "participants": [
+                {
+                    "id": "10000001-b0d9-11ec-b909-0242ac120002",
+                    "name": "Альфа X"
+                },
+                {
+                    "id": "10000002-b0d9-11ec-b909-0242ac120002",
+                    "name": "Бета X"
+                }
+            ]
+        }
+    }
+
+    Перепривязать участника от первой сделки ко второй.
+    !!! ЭТО Deprecated, т.к. обновление participant (в т.ч. перепривязка) поддерживается в рамках метода writeDeal():
     mutation M($legalEntity: LegalEntityInput){
         writeLegalEntity(legalEntity: $legalEntity) {
             id

@@ -4,11 +4,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.NaturalId;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Полученная сущность
@@ -17,13 +16,28 @@ import javax.persistence.Table;
 @SuperBuilder
 @NoArgsConstructor
 @Entity
+//@DynamicUpdate
+//@SelectBeforeUpdate
 @Table(name = "LEGAL_ENTITY")
+@Slf4j
 public class LegalEntity extends DomainObject {
     @ManyToOne
     @JoinColumn(name = "deal_id", nullable = false)
     @ToString.Exclude
     private Deal deal;
 
-    private String inn; // это бизнес-ключ
+    @NaturalId // это бизнес-ключ
+    private String inn;
+
     private String name;
+
+    @Override
+    Object getBusinessKey() {
+        return inn;
+    }
+
+    @Override
+    public DomainObject mergeToDb(EntityManager entityManager) {
+        return super.mergeToDb(entityManager);
+    }
 }
