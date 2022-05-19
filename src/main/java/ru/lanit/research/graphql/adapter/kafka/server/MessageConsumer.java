@@ -13,6 +13,8 @@ import reactor.core.publisher.Mono;
 import ru.lanit.research.graphql.adapter.kafka.dto.KafkaGraphQlRequest;
 import ru.lanit.research.graphql.domain.Deal;
 
+import java.util.Locale;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -29,7 +31,7 @@ public class MessageConsumer {
 
         String id = "42";
         ExecutionGraphQlRequest execution =
-            new DefaultExecutionGraphQlRequest(request.getDocument(), request.getOperationName(), request.getVariables(), id, null);
+            new DefaultExecutionGraphQlRequest(request.getDocument(), request.getOperationName(), request.getVariables(), null, id, null);
         Mono<ExecutionGraphQlResponse> response = graphQlService.execute(execution);
 
         Object result = response.block().field("getAllDeals[0]").getValue();//.getExecutionResult().toSpecification().get("data")).get("getAllDeals");
