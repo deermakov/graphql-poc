@@ -25,6 +25,15 @@ PoC GraphQL, включая:
         }
     }
 
+    Запрос сделок по "num or sum":
+    query {
+        getDealsByNumOrSum(num: "# 1", sum: 200){
+            id,
+            num,
+            sum
+        }
+    }
+
     Запрос всех участников:
     {
         getAllLegalEntities {

@@ -29,6 +29,7 @@ input DealInput {
 # The Root Query for the application
 type Query {
     getAllDeals: [Deal]!
+    getDealsByNumOrSum(num: String, sum: Float): [Deal]!
     getAllLegalEntities: [LegalEntity]!
 }
 
