@@ -6,8 +6,10 @@ import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 import ru.lanit.research.graphql.adapter.jpa.DealJpaRepository;
 import ru.lanit.research.graphql.adapter.jpa.LegalEntityJpaRepository;
+import ru.lanit.research.graphql.adapter.jpa.PledgeJpaRepository;
 import ru.lanit.research.graphql.domain.Deal;
 import ru.lanit.research.graphql.domain.LegalEntity;
+import ru.lanit.research.graphql.domain.Pledge;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -17,6 +19,7 @@ import java.util.List;
 public class Query {
     private final DealJpaRepository dealJpaRepository;
     private final LegalEntityJpaRepository legalEntityJpaRepository;
+    private final PledgeJpaRepository pledgeJpaRepository;
 
     @QueryMapping
     public List<Deal> getAllDeals() {
@@ -34,4 +37,10 @@ public class Query {
     public List<LegalEntity> getAllLegalEntities() {
         return legalEntityJpaRepository.findAllByOrderByInn();
     }
+
+    @QueryMapping
+    public List<Pledge> getAllPledges() {
+        return pledgeJpaRepository.findAll();
+    }
+
 }

@@ -1,3 +1,22 @@
+interface Pledge {
+    id: ID!
+    description: String!
+}
+
+type Car implements Pledge {
+    id: ID!
+    description: String!
+    vin: String!
+}
+
+type House implements Pledge{
+    id: ID!
+    description: String!
+    cadaster: String!
+}
+
+# ---------------------------------
+
 type Deal {
     id: ID!
     num: String!
@@ -28,6 +47,8 @@ input DealInput {
 
 # The Root Query for the application
 type Query {
+    getAllPledges: [Pledge]
+
     getAllDeals: [Deal]!
     getDealsByNumOrSum(num: String, sum: Float): [Deal]!
     getAllLegalEntities: [LegalEntity]!

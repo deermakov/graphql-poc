@@ -1,0 +1,39 @@
+databaseChangeLog:
+- changeSet:
+    id: 06-create_pledge
+    author: deermakov
+    changes:
+    - createTable:
+        tableName: PLEDGE
+        columns:
+        - column:
+            name: ID
+            type: UUID
+        - column:
+            name: PLEDGE_TYPE
+            type: VARCHAR(10)
+            constraints:
+              nullable: false
+        - column:
+            name: DESCRIPTION
+            type: VARCHAR(100)
+            constraints:
+              nullable: true
+        - column:
+            name: VIN
+            type: VARCHAR(100)
+            constraints:
+              nullable: true
+        - column:
+            name: CADASTER
+            type: VARCHAR(100)
+            constraints:
+              nullable: true
+    - addPrimaryKey:
+        columnNames: ID
+        constraintName: PK_PLEDGE
+        tableName: PLEDGE
+        validate: true
+    rollback:
+    - dropTable:
+        tableName: PLEDGE

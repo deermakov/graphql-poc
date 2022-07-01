@@ -9,3 +9,7 @@ databaseChangeLog:
       file: classpath:/db/v1/04-insert_deals.sql
   - include:
       file: classpath:/db/v1/05-insert_participants.sql
+  - include:
+      file: classpath:/db/v1/06-create_pledge.yml
+  - include:
+      file: classpath:/db/v1/07-insert_pledge.sql

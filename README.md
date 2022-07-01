@@ -183,3 +183,19 @@ PoC GraphQL, включая:
             } 
         }
     }
+
+    Получить все залоги (запрос с полиморфным результатом)
+    {
+        getAllPledges {
+            id
+            __typename
+            description
+            ... on Car {
+                vin
+            }
+            ... on House {
+                cadaster
+            }
+        }
+    }
+
