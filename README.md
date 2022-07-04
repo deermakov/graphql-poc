@@ -4,6 +4,7 @@ PoC GraphQL, включая:
 - GraphQL over Kafka (запросы и ответы, см. Client, MessageProducer, MessageConsumer)
 - идентификация сущностей по суррогатному и бизнес-ключу
 - обновление графа сущностей, включая обновление (в т.ч. перепривязку) вложенных сущностей
+- полиморфизм
 
 Клиент и сервер GraphQL реализованы на Spring for GraphQL: https://spring.io/projects/spring-graphql
 
