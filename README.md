@@ -210,4 +210,34 @@ PoC GraphQL, включая:
         }
     }
 
+    Получить все залоги - тот же запрос, но с использованием fragment
+    fragment PledgeFields on Pledge {
+        id
+        __typename
+        description
+        pledgeHolder {
+            id
+            __typename
+            name
+        }
+    }
 
+    query {
+        getAllPledges {
+            ...PledgeFields
+            ... on Car {
+                vin
+            }
+            ... on House {
+                cadaster
+            }
+            pledgeHolder {
+                ... on Bank {
+                    bic
+                }
+                ... on Lombard {
+                    regNumber
+                }
+            }
+        }
+    }
