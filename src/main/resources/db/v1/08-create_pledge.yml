@@ -1,0 +1,55 @@
+databaseChangeLog:
+- changeSet:
+    id: 06-create_pledge
+    author: deermakov
+    changes:
+    - createTable:
+        tableName: PLEDGE
+        columns:
+        - column:
+            name: ID
+            type: UUID
+        - column:
+            name: PLEDGE_TYPE
+            type: VARCHAR(10)
+            constraints:
+              nullable: false
+        - column:
+            name: PLEDGE_HOLDER_ID
+            type: UUID
+            constraints:
+              nullable: false
+        - column:
+            name: DESCRIPTION
+            type: VARCHAR(100)
+            constraints:
+              nullable: true
+        - column:
+            name: VIN
+            type: VARCHAR(100)
+            constraints:
+              nullable: true
+        - column:
+            name: CADASTER
+            type: VARCHAR(100)
+            constraints:
+              nullable: true
+    - addPrimaryKey:
+        columnNames: ID
+        constraintName: PK_PLEDGE
+        tableName: PLEDGE
+        validate: true
+    - addForeignKeyConstraint:
+        baseColumnNames: PLEDGE_HOLDER_ID
+        baseTableName: PLEDGE
+        constraintName: FK_PLEDGE_HOLDER
+        deferrable: true
+        initiallyDeferred: true
+        onDelete: CASCADE
+        onUpdate: RESTRICT
+        referencedColumnNames: ID
+        referencedTableName: PLEDGE_HOLDER
+        validate: true
+    rollback:
+    - dropTable:
+        tableName: PLEDGE

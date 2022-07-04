@@ -185,7 +185,7 @@ PoC GraphQL, включая:
     }
 
     Получить все залоги (запрос с полиморфным результатом)
-    {
+    query {
         getAllPledges {
             id
             __typename
@@ -196,6 +196,18 @@ PoC GraphQL, включая:
             ... on House {
                 cadaster
             }
+            pledgeHolder {
+                id
+                __typename
+                name
+                ... on Bank {
+                    bic
+                }
+                ... on Lombard {
+                    regNumber
+                }
+            }
         }
     }
+
 

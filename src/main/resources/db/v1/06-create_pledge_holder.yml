@@ -1,39 +1,39 @@
 databaseChangeLog:
 - changeSet:
-    id: 06-create_pledge
+    id: 06-create_pledge_holder
     author: deermakov
     changes:
     - createTable:
-        tableName: PLEDGE
+        tableName: PLEDGE_HOLDER
         columns:
         - column:
             name: ID
             type: UUID
         - column:
-            name: PLEDGE_TYPE
+            name: PLEDGE_HOLDER_TYPE
             type: VARCHAR(10)
             constraints:
               nullable: false
         - column:
-            name: DESCRIPTION
+            name: NAME
             type: VARCHAR(100)
             constraints:
               nullable: true
         - column:
-            name: VIN
+            name: BIC
             type: VARCHAR(100)
             constraints:
               nullable: true
         - column:
-            name: CADASTER
+            name: REG_NUMBER
             type: VARCHAR(100)
             constraints:
               nullable: true
     - addPrimaryKey:
         columnNames: ID
-        constraintName: PK_PLEDGE
-        tableName: PLEDGE
+        constraintName: PK_PLEDGE_HOLDER
+        tableName: PLEDGE_HOLDER
         validate: true
     rollback:
     - dropTable:
-        tableName: PLEDGE
+        tableName: PLEDGE_HOLDER

@@ -8,12 +8,8 @@ import javax.persistence.*;
 //@MappedSuperclass
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="pledge_type",
+@DiscriminatorColumn(name="pledge_holder_type",
     discriminatorType = DiscriminatorType.STRING)
-public abstract class Pledge extends DomainObject {
-    private String description;
-
-    @OneToOne
-    @JoinColumn(name = "pledge_holder_id")
-    private PledgeHolder pledgeHolder;
+public abstract class PledgeHolder extends DomainObject {
+    private String name;
 }

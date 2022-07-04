@@ -10,6 +10,10 @@ databaseChangeLog:
   - include:
       file: classpath:/db/v1/05-insert_participants.sql
   - include:
-      file: classpath:/db/v1/06-create_pledge.yml
+      file: classpath:/db/v1/06-create_pledge_holder.yml
   - include:
-      file: classpath:/db/v1/07-insert_pledge.sql
+      file: classpath:/db/v1/07-insert_pledge_holder.sql
+  - include:
+      file: classpath:/db/v1/08-create_pledge.yml
+  - include:
+      file: classpath:/db/v1/09-insert_pledge.sql

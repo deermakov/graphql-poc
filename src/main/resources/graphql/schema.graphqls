@@ -1,18 +1,38 @@
 interface Pledge {
     id: ID!
     description: String!
+    pledgeHolder: PledgeHolder!
 }
 
 type Car implements Pledge {
     id: ID!
     description: String!
+    pledgeHolder: PledgeHolder!
     vin: String!
 }
 
-type House implements Pledge{
+type House implements Pledge {
     id: ID!
     description: String!
+    pledgeHolder: PledgeHolder!
     cadaster: String!
+}
+
+interface PledgeHolder {
+    id: ID!
+    name: String!
+}
+
+type Bank implements PledgeHolder {
+    id: ID!
+    name: String!
+    bic: String!
+}
+
+type Lombard implements PledgeHolder {
+    id: ID!
+    name: String!
+    regNumber: String!
 }
 
 # ---------------------------------
