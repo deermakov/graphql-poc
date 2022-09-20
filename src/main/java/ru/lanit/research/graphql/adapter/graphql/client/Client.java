@@ -22,8 +22,10 @@ public class Client {
         "            num,\n" +
         "            sum,\n" +
         "            participants {\n" +
+        "                __typename,\n"+
         "                id,\n" +
         "                inn\n" +
+        "                name\n" +
         "            }\n" +
         "        }\n" +
         "    }\n";

@@ -41,14 +41,42 @@ type Deal {
     id: ID!
     num: String!
     sum: Float
-    participants: [LegalEntity]
+    participants: [Party]
 }
 
-type LegalEntity {
+interface Party {
     id: ID!
     inn: String
     name: String
     deal: Deal
+}
+
+type LegalEntity implements Party {
+    id: ID!
+    inn: String
+    name: String
+    deal: Deal
+}
+
+type Person implements Party {
+    id: ID!
+    inn: String
+    name: String
+    deal: Deal
+}
+
+input PartyInput {
+    id: ID
+    inn: String
+    name: String
+    deal: DealInput
+}
+
+input PersonInput {
+    id: ID
+    inn: String
+    name: String
+    deal: DealInput
 }
 
 input LegalEntityInput {
@@ -62,7 +90,7 @@ input DealInput {
     id: ID
     num: String
     sum: Float
-    participants: [LegalEntityInput]
+    participants: [PartyInput]
 }
 
 # The Root Query for the application

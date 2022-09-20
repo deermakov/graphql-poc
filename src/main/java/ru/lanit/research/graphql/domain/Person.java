@@ -1,15 +1,15 @@
 package ru.lanit.research.graphql.domain;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.annotations.NaturalId;
 
-import javax.persistence.*;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+import javax.persistence.Table;
 
 /**
  * Полученная сущность
@@ -22,9 +22,9 @@ import javax.persistence.*;
 //@DynamicUpdate
 //@SelectBeforeUpdate
 @Table(name = "PARTY")
-@DiscriminatorValue("LE")
+@DiscriminatorValue("P")
 @Slf4j
-public class LegalEntity extends Party {
+public class Person extends Party {
 
     @Override
     Object getBusinessKey() {

@@ -4,7 +4,8 @@ PoC GraphQL, включая:
 - GraphQL over Kafka (запросы и ответы, см. Client, MessageProducer, MessageConsumer)
 - идентификация сущностей по суррогатному и бизнес-ключу
 - обновление графа сущностей, включая обновление (в т.ч. перепривязку) вложенных сущностей
-- полиморфизм
+- полиморфизм при чтении (query): на стороне отправителя (GQL types implements и query fragments) и на стороне получателя (JSON parsing на основе @JsonTypeInfo, см. Party).
+- полиморфизм при записи (mutation) не получается ! Поэтому вместо одной операции writeDeal() со вложенными (полиморфными) participants приходится делать writeDeal() без participants и потом writeLegalEntity() для сохранения конкретно ЮЛ
 
 Клиент и сервер GraphQL реализованы на Spring for GraphQL: https://spring.io/projects/spring-graphql
 
@@ -19,6 +20,7 @@ PoC GraphQL, включая:
             num,
             sum,
             participants {
+                __typename,
                 id,
                 inn,
                 name
@@ -35,7 +37,7 @@ PoC GraphQL, включая:
         }
     }
 
-    Запрос всех участников:
+    Запрос всех участников-ЮЛ:
     {
         getAllLegalEntities {
             id
@@ -48,6 +50,7 @@ PoC GraphQL, включая:
         }
     }
 
+    ! НЕ РАБОТАЕТ (см. выше про полиморфизм) !
     Создание новой сделки с новыми участниками:
     mutation M($deal: DealInput){
         writeDeal(deal: $deal) {
@@ -82,6 +85,7 @@ PoC GraphQL, включая:
         }
     }    
 
+    ! НЕ РАБОТАЕТ (см. выше про полиморфизм) !
     Создание новой сделки с обновлением существующих участников (у них обновляются name'ы и
     они перепривязываются от существующей сделки к этой новой). Идентификация участников по бизнес-ключам:
     mutation M($deal: DealInput){
@@ -117,6 +121,7 @@ PoC GraphQL, включая:
         }
     }
 
+    ! НЕ РАБОТАЕТ (см. выше про полиморфизм) !
     Обновление существующей сделки (sum) с обновлением существующих участников (name'ы).
     Идентификация сделки и участников - по id:
     mutation M($deal: DealInput){
@@ -152,8 +157,7 @@ PoC GraphQL, включая:
         }
     }
 
-    Перепривязать участника от первой сделки ко второй.
-    !!! ЭТО Deprecated, т.к. обновление participant (в т.ч. перепривязка) поддерживается в рамках метода writeDeal():
+    Перепривязать (+ переименовать) участника от первой сделки ко второй.
     mutation M($legalEntity: LegalEntityInput){
         writeLegalEntity(legalEntity: $legalEntity) {
             id
@@ -168,6 +172,7 @@ PoC GraphQL, включая:
     {
         "legalEntity":{
             "id": "10000002-b0d9-11ec-b909-0242ac120002",
+            "name": "Переименовано",
             "deal":
             {
                 "id": "00000002-b0d9-11ec-b909-0242ac120002"
@@ -178,6 +183,7 @@ PoC GraphQL, включая:
     {
         "legalEntity":{
             "inn": "200",
+            "name": "Переименовано",
             "deal":
             {
                 "id": "00000002-b0d9-11ec-b909-0242ac120002"

@@ -1,10 +1,10 @@
 databaseChangeLog:
 - changeSet:
-    id: 03-create_legal_entity
+    id: 03-create_party
     author: deermakov
     changes:
     - createTable:
-        tableName: LEGAL_ENTITY
+        tableName: PARTY
         columns:
         - column:
             name: ID
@@ -20,22 +20,27 @@ databaseChangeLog:
             constraints:
               nullable: true
         - column:
+            name: DTYPE
+            type: VARCHAR
+            constraints:
+              nullable: true
+        - column:
             name: NAME
             type: VARCHAR(100)
             constraints:
               nullable: true
     - addPrimaryKey:
         columnNames: ID
-        constraintName: PK_LEGAL_ENTITY
-        tableName: LEGAL_ENTITY
+        constraintName: PK_PARTY
+        tableName: PARTY
         validate: true
     - addUniqueConstraint:
         columnNames: INN
         constraintName: INN_UNIQUE
         deferrable: true
         initiallyDeferred: true
-        tableName: LEGAL_ENTITY
+        tableName: PARTY
         validate: true
     rollback:
     - dropTable:
-        tableName: LEGAL_ENTITY
+        tableName: PARTY

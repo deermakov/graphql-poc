@@ -32,15 +32,20 @@ public class MessageConsumer {
         String id = "42";
         ExecutionGraphQlRequest execution =
             new DefaultExecutionGraphQlRequest(request.getDocument(), request.getOperationName(), request.getVariables(), null, id, null);
-        Mono<ExecutionGraphQlResponse> response = graphQlService.execute(execution);
+        Mono<ExecutionGraphQlResponse> responseMono = graphQlService.execute(execution);
 
-        Object result = response.block().field("getAllDeals[0]").getValue();//.getExecutionResult().toSpecification().get("data")).get("getAllDeals");
+        ExecutionGraphQlResponse response = responseMono.block();
 
+        // Ответ в формате JSON
+        Object result = response.field("getAllDeals[0]").getValue();//.getExecutionResult().toSpecification().get("data")).get("getAllDeals");
+        log.info("GraphQL async response (JSON) = {}", result);
+
+        // Ответ в объектном формате
         try {
             String json = new ObjectMapper().writeValueAsString(result);
             Deal deal = new ObjectMapper().readValue(json, Deal.class);
 
-            log.info("GraphQL async response = {}", deal);
+            log.info("GraphQL async response (Object) = {}", deal);
         } catch (Exception e) {
             log.error("", e);
         }
