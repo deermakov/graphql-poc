@@ -1,5 +1,6 @@
 package ru.lanit.research.graphql.domain;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -24,12 +25,10 @@ import javax.persistence.Table;
 @Table(name = "PARTY")
 @DiscriminatorValue("P")
 @Slf4j
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Person extends Party {
 
-    @Override
-    Object getBusinessKey() {
-        return getInn();
-    }
+    private String fio;
 
     @Override
     public DomainObject mergeToDb(EntityManager entityManager) {

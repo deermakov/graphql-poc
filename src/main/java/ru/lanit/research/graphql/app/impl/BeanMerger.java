@@ -1,5 +1,6 @@
 package ru.lanit.research.graphql.app.impl;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -63,11 +64,11 @@ public class BeanMerger {
         log.debug("overrides: {}", overrides);
 
         // делаем копию, чтобы не испортить base
-        ObjectMapper baseMapper = new ObjectMapper();
+        ObjectMapper baseMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         DomainObject baseClone = baseMapper.readValue(baseMapper.writeValueAsString(base), base.getClass());
 
         ObjectReader baseReader = baseMapper.readerForUpdating(baseClone);
-        ObjectMapper overridesMapper = new ObjectMapper();
+        ObjectMapper overridesMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         JsonNode overridesNode = overridesMapper.valueToTree(overrides);
         Object updated = baseReader.readValue(overridesNode);
 

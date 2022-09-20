@@ -12,8 +12,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 import ru.lanit.research.graphql.adapter.kafka.dto.KafkaGraphQlRequest;
 import ru.lanit.research.graphql.domain.Deal;
-
-import java.util.Locale;
+import ru.lanit.research.graphql.domain.PartyInput;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +38,14 @@ public class MessageConsumer {
         // Ответ в формате JSON
         Object result = response.field("getAllDeals[0]").getValue();//.getExecutionResult().toSpecification().get("data")).get("getAllDeals");
         log.info("GraphQL async response (JSON) = {}", result);
+
+/* Отладка PartyInput:
+        PartyInput partyContainer = new PartyInput();
+        partyContainer.setName("ИМЯ");
+        partyContainer.setFio("ФИО");
+        log.info("PartyInput = {}", partyContainer.toString());
+        log.info("Party = {}", partyContainer.getParty());
+*/
 
         // Ответ в объектном формате
         try {

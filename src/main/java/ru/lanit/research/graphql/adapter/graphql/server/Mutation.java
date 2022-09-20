@@ -10,10 +10,14 @@ import ru.lanit.research.graphql.adapter.jpa.DealJpaRepository;
 import ru.lanit.research.graphql.adapter.jpa.LegalEntityJpaRepository;
 import ru.lanit.research.graphql.app.impl.BeanMerger;
 import ru.lanit.research.graphql.domain.Deal;
+import ru.lanit.research.graphql.domain.DealInput;
 import ru.lanit.research.graphql.domain.LegalEntity;
+import ru.lanit.research.graphql.domain.Party;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -28,8 +32,22 @@ public class Mutation {
 
     @MutationMapping
     @Transactional
-    public Deal writeDeal(@Argument Deal deal) {
-        Deal mergedDeal = (Deal) deal.mergeToDb(entityManager);
+    public Deal writeDeal(@Argument DealInput deal) {
+        // Преобразование dealInput в Deal
+        Deal dealEntity = new Deal();
+        try {
+            dealEntity = (Deal)BeanMerger.deepMerge(deal, dealEntity);
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
+
+        // Преобразование всех participants (PartyInput в Party)
+        List<Party> participants = new ArrayList<>();
+        deal.getParticipantsInput().forEach(partyInput -> participants.add(partyInput.getParty()));
+        dealEntity.setParticipants(participants);
+
+        // merge сделки в БД
+        Deal mergedDeal = (Deal) dealEntity.mergeToDb(entityManager);
         return dealJpaRepository.save(mergedDeal);
     }
 

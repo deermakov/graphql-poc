@@ -56,6 +56,7 @@ type LegalEntity implements Party {
     inn: String
     name: String
     deal: Deal
+    ogrn: String
 }
 
 type Person implements Party {
@@ -63,20 +64,17 @@ type Person implements Party {
     inn: String
     name: String
     deal: Deal
+    fio: String
 }
 
 input PartyInput {
+    typename: String,
     id: ID
     inn: String
     name: String
     deal: DealInput
-}
-
-input PersonInput {
-    id: ID
-    inn: String
-    name: String
-    deal: DealInput
+    fio: String
+    ogrn: String
 }
 
 input LegalEntityInput {
@@ -84,13 +82,14 @@ input LegalEntityInput {
     inn: String
     name: String
     deal: DealInput
+    ogrn: String
 }
 
 input DealInput {
     id: ID
     num: String
     sum: Float
-    participants: [PartyInput]
+    participantsInput: [PartyInput]
 }
 
 # The Root Query for the application

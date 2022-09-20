@@ -29,6 +29,16 @@ databaseChangeLog:
             type: VARCHAR(100)
             constraints:
               nullable: true
+        - column:
+            name: FIO
+            type: VARCHAR
+            constraints:
+              nullable: true
+        - column:
+            name: OGRN
+            type: VARCHAR(100)
+            constraints:
+              nullable: true
     - addPrimaryKey:
         columnNames: ID
         constraintName: PK_PARTY

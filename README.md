@@ -5,7 +5,7 @@ PoC GraphQL, включая:
 - идентификация сущностей по суррогатному и бизнес-ключу
 - обновление графа сущностей, включая обновление (в т.ч. перепривязку) вложенных сущностей
 - полиморфизм при чтении (query): на стороне отправителя (GQL types implements и query fragments) и на стороне получателя (JSON parsing на основе @JsonTypeInfo, см. Party).
-- полиморфизм при записи (mutation) не получается ! Поэтому вместо одной операции writeDeal() со вложенными (полиморфными) participants приходится делать writeDeal() без participants и потом writeLegalEntity() для сохранения конкретно ЮЛ
+- полиморфизм при записи (mutation): нет стандартных возможностей GraphQL, поэтому пришлось делать костыль в виде PartyInput (это класс со всеми полями от Person и LegalEntity)
 
 Клиент и сервер GraphQL реализованы на Spring for GraphQL: https://spring.io/projects/spring-graphql
 
@@ -24,6 +24,12 @@ PoC GraphQL, включая:
                 id,
                 inn,
                 name
+               ...on Person {
+                    fio
+                }
+                ...on LegalEntity {
+                    ogrn
+                }
             }
         }
     }
@@ -50,7 +56,6 @@ PoC GraphQL, включая:
         }
     }
 
-    ! НЕ РАБОТАЕТ (см. выше про полиморфизм) !
     Создание новой сделки с новыми участниками:
     mutation M($deal: DealInput){
         writeDeal(deal: $deal) {
@@ -61,8 +66,8 @@ PoC GraphQL, включая:
                 id,
                 inn,
                 name,
-                deal{
-                    id
+                deal {
+                   id
                 }
             }
         }
@@ -72,20 +77,22 @@ PoC GraphQL, включая:
         "deal": {
             "num": "Моя сделка",
             "sum": 111,
-            "participants": [
+            "participantsInput": [
                 {
+                    "typename": "LegalEntity",
                     "inn": "INN1",
-                    "name": "Новый - 1"
+                    "name": "Новый ЮЛ",
+                    "ogrn": "AABBCC"
                 },
                 {
+                    "typename": "Person",
                     "inn": "INN2",
-                    "name": "Новый - 2"
+                    "fio": "Иван Иваныч"
                 }
             ]
         }
-    }    
+    }   
 
-    ! НЕ РАБОТАЕТ (см. выше про полиморфизм) !
     Создание новой сделки с обновлением существующих участников (у них обновляются name'ы и
     они перепривязываются от существующей сделки к этой новой). Идентификация участников по бизнес-ключам:
     mutation M($deal: DealInput){
@@ -108,12 +115,14 @@ PoC GraphQL, включая:
         "deal": {
             "num": "Моя сделка 2",
             "sum": 111,
-            "participants": [
+            "participantsInput": [
                 {
+                    "typename": "LegalEntity",
                     "inn": "100",
                     "name": "Альфа UPD"
                 },
                 {
+                    "typename": "LegalEntity",
                     "inn": "200",
                     "name": "Бета UPD"
                 }
@@ -121,7 +130,6 @@ PoC GraphQL, включая:
         }
     }
 
-    ! НЕ РАБОТАЕТ (см. выше про полиморфизм) !
     Обновление существующей сделки (sum) с обновлением существующих участников (name'ы).
     Идентификация сделки и участников - по id:
     mutation M($deal: DealInput){
@@ -144,12 +152,14 @@ PoC GraphQL, включая:
         "deal": {
             "id": "00000001-b0d9-11ec-b909-0242ac120002",
             "sum": 999,
-            "participants": [
+            "participantsInput": [
                 {
+                    "typename": "LegalEntity",
                     "id": "10000001-b0d9-11ec-b909-0242ac120002",
                     "name": "Альфа X"
                 },
                 {
+                    "typename": "LegalEntity",
                     "id": "10000002-b0d9-11ec-b909-0242ac120002",
                     "name": "Бета X"
                 }

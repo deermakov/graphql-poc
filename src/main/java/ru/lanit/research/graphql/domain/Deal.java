@@ -39,10 +39,10 @@ public class Deal extends DomainObject {
 
         // merge участников
         List<Party> mergedParticipants = new ArrayList<>();
-        participants.stream().forEach(legalEntity -> {
-            LegalEntity mergedLegalEntity = (LegalEntity) legalEntity.mergeToDb(entityManager);
-            mergedLegalEntity.setDeal(mergedDeal);// установим в него ссылку на сделку
-            mergedParticipants.add(mergedLegalEntity);
+        participants.stream().forEach(party -> {
+            Party mergedParticipant = (Party) party.mergeToDb(entityManager);
+            mergedParticipant.setDeal(mergedDeal);// установим в него ссылку на сделку
+            mergedParticipants.add(mergedParticipant);
         });
         mergedDeal.setParticipants(mergedParticipants);
 

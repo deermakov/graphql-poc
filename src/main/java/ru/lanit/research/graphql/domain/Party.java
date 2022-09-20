@@ -39,4 +39,9 @@ public abstract class Party extends DomainObject {
     @JoinColumn(name = "deal_id", nullable = false)
     @ToString.Exclude
     private Deal deal;
+
+    @Override
+    Object getBusinessKey() {
+        return getInn();
+    }
 }
